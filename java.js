@@ -226,9 +226,6 @@ deleter.addEventListener('click', () => {
     display.innerHTML = displayText;
 });
 
-//Everything is good, just have to figure out how to get string in display into a mathematical equation
-
-
 function doMath() {
     let mathArray = displayText.split(" ");
     let number1 = "";
@@ -238,50 +235,39 @@ function doMath() {
     let a = 0;
     let b = 0;
 
-    console.log(mathArray);
-
     for (let i = 0; i < mathArray.length ; i++) {
         console.log(mathArray[i]);
         if (mathArray[i] == 1 || mathArray[i] == 2 || mathArray[i] == 3 || mathArray[i] == 4 || mathArray[i] == 5 || mathArray[i] == 6 || mathArray[i] == 7 || mathArray[i] == 8 || mathArray[i] == 9 || mathArray[i] == '.' || mathArray[i] == 0) {
             number1 += mathArray[i];
-            console.log(number1);
         }
         else if (mathArray[i] == '+' || mathArray[i] == '-' || mathArray[i] == 'x' || mathArray[i] == '/' || mathArray[i] == "="){
             number1 = parseFloat(number1);
-            console.log(mathArray[i]);
             array.push(number1);
             array.push(mathArray[i]);
             array = array.flat();
-            console.log(array);
             number1 = "";
         }
         else if (typeof array[i] === NaN) {
             delete array[i];
             array = array.flat();
-            console.log(array[i]);
         }
         else {
-            console.log(array[i]);
             mathArray[i] = parseFloat(mathArray[i]);
             array.push(mathArray[i]);
             array = array.flat();
-            console.log(array[i]);
             continue;
         }
         array = array.flat();
     }
 
     array = array.flat();
-    console.log(array);
 
     let newArray = array.filter(elements => {
         return !Number.isNaN(elements);
     });
-    console.log(newArray);
     array = newArray;
-    console.log(array);
 
-    function multiArray() {
+    function allMath() {
         for (let j = 0; j < array.length; j++) {
             if (array[j] == 'x') {
                 x = array[j - 1] * array[j + 1];
@@ -289,93 +275,47 @@ function doMath() {
                 delete array[j + 1];
                 array[j] = x;
                 array = array.flat();
-                console.log(array);
-                multiArray();
+                allMath();
             }
-            else {
-                continue;
-            }
-        }
-    }
-    multiArray();
-
-    array = array.flat();
-    console.log(array);
-
-    function diviArray() {
-        for (let j = 0; j < array.length; j++) {
-            if (array[j] == '/') {
+            else if (array[j] == '/') {
                 y = array[j - 1] / array[j + 1];
                 delete array[j - 1]
                 delete array[j + 1];
                 array[j] = y;
                 array = array.flat();
-                console.log(array);
-                diviArray();
+                allMath();
             }
-            else {
-                continue;
-            }
-        }
-    }
-    diviArray();
-    array = array.flat();
-    console.log(array);
-
-    function addArray() {
-        for (let j = 0; j < array.length; j++) {
-            if (array[j] == '+') {
+            else if (array[j] == '+') {
                 a = array[j - 1] + array[j + 1];
                 delete array[j - 1]
                 delete array[j + 1];
                 array[j] = a;
                 array = array.flat();
-                console.log(array);
-                addArray();
+                allMath();
             }
-            else {
-                continue;
-            }
-        }
-    }
-    addArray();
-
-
-    array = array.flat();
-    console.log(array);
-
-
-    function subtrArray() {
-        for (let j = 0; j < array.length; j++) {
-            if (array[j] == '-') {
+            else if (array[j] == '-') {
                 b = array[j - 1] - array[j + 1];
                 delete array[j - 1]
                 delete array[j + 1];
                 array[j] = b;
                 array = array.flat();
-                console.log(array);
-                subtrArray();
+                allMath();
             }
             else {
                 continue;
             }
         }
-    }
-    subtrArray();
-    
-    array = array.flat();
-    console.log(array);
 
-    let c = array[0];
-    console.log(c);
+    }
+    allMath();
+
+    array = array.flat();
 
     displayText = array[0].toFixed(2) + " ";
     display.innerHTML = displayText;
     mathArray = [];
     mathArray[0] = parseFloat(displayText);
     array = [];
-    console.log(mathArray);
-
 }
 
 
@@ -385,14 +325,6 @@ equal.addEventListener('click', () => {
     doMath();
 });
 
-
-
-//Let's think this through: We need to find a way to take the string formed in the 
-//display box, turn each number into an int, and do the appropriate operation
-//For example, say someone types '123 + 45 x 6 ='. We take the string, stores those numbers
-//as ints, then do operations appropriately. We could iterate through the array and make
-//sure all numbers go from strings to ints. Then, we can iterate again, then do a series of 
-//if else statements for each operation and say "if mathArray[i] == x, number = mathArray [i-1] x mathArray[i + 1]."
 
 
 
